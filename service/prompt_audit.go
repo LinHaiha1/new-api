@@ -119,7 +119,7 @@ func StartPromptAuditConfigSyncTask() {
 	go func() {
 		syncPromptAuditConfig(true)
 
-		intervalSeconds := common.GetEnvOrDefault("PROMPT_AUDIT_CONFIG_SYNC_INTERVAL_SECONDS", 600)
+		intervalSeconds := common.GetEnvOrDefault("PROMPT_AUDIT_CONFIG_SYNC_INTERVAL_SECONDS", 86400)
 		if intervalSeconds < 60 {
 			intervalSeconds = 60
 		}
