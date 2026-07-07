@@ -125,12 +125,24 @@ func Relay(c *gin.Context, relayFormat types.RelayFormat) {
 
 	needSensitiveCheck := setting.ShouldCheckPromptSensitive()
 	needCountToken := constant.CountToken
+	needPromptAudit := service.PromptAuditEnabled()
 	// Avoid building huge CombineText (strings.Join) when token counting and sensitive check are both disabled.
 	var meta *types.TokenCountMeta
-	if needSensitiveCheck || needCountToken {
+	if needSensitiveCheck || needCountToken || needPromptAudit {
 		meta = request.GetTokenCountMeta()
 	} else {
 		meta = fastTokenCountMetaForPricing(request)
+	}
+
+	if needPromptAudit && meta != nil {
+		service.SubmitPromptAuditIfMatched(meta.CombineText, service.PromptAuditMeta{
+			RequestId: relayInfo.RequestId,
+			UserId:    relayInfo.UserId,
+			TokenId:   relayInfo.TokenId,
+			Model:     relayInfo.OriginModelName,
+			Group:     relayInfo.UsingGroup,
+			ChannelId: c.GetInt("channel_id"),
+		})
 	}
 
 	if needSensitiveCheck && meta != nil {
