@@ -86,6 +86,14 @@ export function useTopNavLinks(): TopNavLink[] {
     links.push({ title: t('Rankings'), href: '/rankings', requiresAuth })
   }
 
+  if (modules?.image !== false) {
+    links.push({
+      title: '生图站',
+      href: 'https://image.1omgt.com',
+      external: true,
+    })
+  }
+
   // Docs (supports external links)
   if (modules?.docs !== false) {
     if (docsLink) {

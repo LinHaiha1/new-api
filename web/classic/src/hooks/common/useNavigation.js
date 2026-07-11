@@ -28,6 +28,7 @@ export const useNavigation = (t, docsLink, headerNavModules) => {
       pricing: true,
       docs: true,
       about: true,
+      image: true,
     };
 
     // 使用传入的配置或默认配置
@@ -48,6 +49,12 @@ export const useNavigation = (t, docsLink, headerNavModules) => {
         text: t('模型广场'),
         itemKey: 'pricing',
         to: '/pricing',
+      },
+      {
+        text: '生图站',
+        itemKey: 'image',
+        isExternal: true,
+        externalLink: 'https://image.1omgt.com',
       },
       ...(docsLink
         ? [
@@ -76,6 +83,9 @@ export const useNavigation = (t, docsLink, headerNavModules) => {
         return typeof modules.pricing === 'object'
           ? modules.pricing.enabled
           : modules.pricing;
+      }
+      if (link.itemKey === 'image') {
+        return modules.image !== false;
       }
       return modules[link.itemKey] === true;
     });
