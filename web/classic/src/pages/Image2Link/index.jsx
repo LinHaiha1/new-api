@@ -28,8 +28,11 @@ const Image2Link = () => {
     if (!keys.length) return;
 
     const url = new URL(IMAGE_SITE_URL);
-    url.searchParams.set('baseUrl', window.location.origin);
-    url.searchParams.set('apiKey', `sk-${keys[0]}`);
+    const params = new URLSearchParams({
+      baseUrl: window.location.origin,
+      apiKey: `sk-${keys[0]}`,
+    });
+    url.hash = `newapi?${params.toString()}`;
     window.location.href = url.toString();
   }, [keys]);
 

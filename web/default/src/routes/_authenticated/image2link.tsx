@@ -47,8 +47,11 @@ function Image2LinkPage() {
     }
 
     const url = new URL(IMAGE_SITE_URL)
-    url.searchParams.set('baseUrl', window.location.origin)
-    url.searchParams.set('apiKey', activeKey)
+    const params = new URLSearchParams({
+      baseUrl: window.location.origin,
+      apiKey: activeKey,
+    })
+    url.hash = `newapi?${params.toString()}`
     window.location.href = url.toString()
   }, [activeKey, keyError, navigate])
 

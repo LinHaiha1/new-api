@@ -53,7 +53,8 @@ export const useNavigation = (t, docsLink, headerNavModules) => {
       {
         text: '生图站',
         itemKey: 'image',
-        to: '/image2link',
+        isExternal: true,
+        externalLink: '/image2link',
       },
       ...(docsLink
         ? [

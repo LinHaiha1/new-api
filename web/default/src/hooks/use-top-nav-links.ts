@@ -91,6 +91,7 @@ export function useTopNavLinks(): TopNavLink[] {
       title: '生图站',
       href: '/image2link',
       requiresAuth: !isAuthed,
+      external: true,
     })
   }
 
