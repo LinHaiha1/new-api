@@ -89,8 +89,8 @@ export function useTopNavLinks(): TopNavLink[] {
   if (modules?.image !== false) {
     links.push({
       title: '生图站',
-      href: 'https://image.1omgt.com',
-      external: true,
+      href: '/image2link',
+      requiresAuth: !isAuthed,
     })
   }
 
