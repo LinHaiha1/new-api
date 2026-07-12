@@ -19,7 +19,7 @@ For commercial licensing, please contact support@quantumnous.com
 import React, { useEffect } from 'react';
 import { useTokenKeys } from '../../hooks/chat/useTokenKeys';
 
-const IMAGE_SITE_URL = 'https://image.1omgt.com';
+const IMAGE_SITE_URL = 'https://image.1omgt.app';
 
 const Image2Link = () => {
   const { keys } = useTokenKeys();

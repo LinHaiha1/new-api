@@ -23,7 +23,7 @@ import { toast } from 'sonner'
 
 import { useActiveChatKey } from '@/features/chat/hooks/use-active-chat-key'
 
-const IMAGE_SITE_URL = 'https://image.1omgt.com'
+const IMAGE_SITE_URL = 'https://image.1omgt.app'
 
 export const Route = createFileRoute('/_authenticated/image2link')({
   component: Image2LinkPage,
