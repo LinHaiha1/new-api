@@ -22,6 +22,19 @@
 ALTCHA 只能提高自动注册成本，不能保证请求一定来自真人。生产环境仍建议配置
 Cloudflare、源站限频和异常注册监控。
 
+## 前端资源
+
+ALTCHA `3.2.1` 的国际化前端文件已固定在
+`gate/static/altcha.i18n-3.2.1.min.js`，并由 gate 通过
+`/auth-gate/assets/` 提供。运行时不再访问 jsDelivr 或其他前端 CDN。
+
+- 来源：npm 包 `altcha@3.2.1`
+- SHA-256：`67a06fef795b716022fc0635346fb4a3ba433d8b8eb429044e2b7d14edd9bc4e`
+
+对应的 MIT 许可证保存在 `gate/licenses/ALTCHA-MIT.txt`，并随容器镜像
+复制到 `/licenses/ALTCHA-MIT.txt`。更新 ALTCHA 时应同时更新版本化文件名、
+HTML 引用和许可证。
+
 ## NewAPI 前端改动
 
 经典前端和新版前端的注册入口使用普通 `<a>` 跳转，让浏览器向 Nginx

@@ -28,6 +28,18 @@ func TestSafeReturnPath(t *testing.T) {
 	}
 }
 
+func TestEmbeddedAltchaAssetChecksum(t *testing.T) {
+	asset, err := embeddedFiles.ReadFile("static/altcha.i18n-3.2.1.min.js")
+	if err != nil {
+		t.Fatalf("read embedded ALTCHA asset: %v", err)
+	}
+	sum := sha256.Sum256(asset)
+	const expected = "67a06fef795b716022fc0635346fb4a3ba433d8b8eb429044e2b7d14edd9bc4e"
+	if actual := hex.EncodeToString(sum[:]); actual != expected {
+		t.Fatalf("ALTCHA asset checksum = %s, want %s", actual, expected)
+	}
+}
+
 func TestWithAffiliate(t *testing.T) {
 	if actual := withAffiliate("/sign-up", "mini56"); actual != "/sign-up?aff=mini56" {
 		t.Fatalf("withAffiliate() = %q", actual)

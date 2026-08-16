@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"html/template"
+	"io/fs"
 	"log"
 	"math/big"
 	"net"
@@ -24,8 +25,8 @@ import (
 
 const cookieName = "newapi_altcha_gate"
 
-//go:embed templates/verify.html
-var templateFiles embed.FS
+//go:embed templates/verify.html static/*
+var embeddedFiles embed.FS
 
 type config struct {
 	altchaSecret  []byte
@@ -77,9 +78,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	page, err := template.ParseFS(templateFiles, "templates/verify.html")
+	page, err := template.ParseFS(embeddedFiles, "templates/verify.html")
 	if err != nil {
 		log.Fatalf("parse template: %v", err)
+	}
+	assetFiles, err := fs.Sub(embeddedFiles, "static")
+	if err != nil {
+		log.Fatalf("load embedded assets: %v", err)
 	}
 
 	app := &gate{
@@ -91,6 +96,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /health", app.health)
+	mux.Handle("GET /assets/", cacheAssets(http.StripPrefix("/assets/", http.FileServer(http.FS(assetFiles)))))
 	mux.HandleFunc("GET /verify", app.verifyPage)
 	mux.HandleFunc("POST /verify", app.verifySolution)
 	mux.HandleFunc("GET /challenge", app.challenge)
@@ -453,6 +459,13 @@ func securityHeaders(next http.Handler) http.Handler {
 		w.Header().Set("X-Frame-Options", "DENY")
 		w.Header().Set("Referrer-Policy", "no-referrer")
 		w.Header().Set("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+		next.ServeHTTP(w, r)
+	})
+}
+
+func cacheAssets(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
 		next.ServeHTTP(w, r)
 	})
 }
