@@ -64,6 +64,14 @@ const Navigation = ({
         targetPath = '/login';
       }
 
+      if (targetPath === '/register') {
+        return (
+          <a key={link.itemKey} href={targetPath} className={commonLinkClasses}>
+            {linkContent}
+          </a>
+        );
+      }
+
       return (
         <Link key={link.itemKey} to={targetPath} className={commonLinkClasses}>
           {linkContent}

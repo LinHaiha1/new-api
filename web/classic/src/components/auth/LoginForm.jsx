@@ -700,12 +700,12 @@ const LoginForm = () => {
                 <div className='mt-6 text-center text-sm'>
                   <Text>
                     {t('没有账户？')}{' '}
-                    <Link
-                      to='/register'
+                    <a
+                      href='/register'
                       className='text-blue-600 hover:text-blue-800 font-medium'
                     >
                       {t('注册')}
-                    </Link>
+                    </a>
                   </Text>
                 </div>
               )}
@@ -853,12 +853,12 @@ const LoginForm = () => {
                 <div className='mt-6 text-center text-sm'>
                   <Text>
                     {t('没有账户？')}{' '}
-                    <Link
-                      to='/register'
+                    <a
+                      href='/register'
                       className='text-blue-600 hover:text-blue-800 font-medium'
                     >
                       {t('注册')}
-                    </Link>
+                    </a>
                   </Text>
                 </div>
               )}

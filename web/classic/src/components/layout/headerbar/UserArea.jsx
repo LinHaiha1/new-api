@@ -181,7 +181,7 @@ const UserArea = ({
         </Link>
         {showRegisterButton && (
           <div className='hidden md:block'>
-            <Link to='/register' className='flex -ml-px'>
+            <a href='/register' className='flex -ml-px'>
               <Button
                 theme='solid'
                 type='primary'
@@ -189,7 +189,7 @@ const UserArea = ({
               >
                 <span className={registerButtonTextSpanClass}>{t('注册')}</span>
               </Button>
-            </Link>
+            </a>
           </div>
         )}
       </div>

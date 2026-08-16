@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>访问验证</title>
+  <script async defer src="https://cdn.jsdelivr.net/npm/altcha@3.2.1/dist/main/altcha.i18n.min.js" type="module"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1d1d1f;
+      --paper: #f5f5f7;
+      --card: rgba(255, 255, 255, 0.88);
+      --line: rgba(0, 0, 0, 0.08);
+      --shadow: rgba(0, 0, 0, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(255, 255, 255, 0.96), transparent 42%),
+        var(--paper);
+    }
+
+    .card {
+      width: min(100%, 470px);
+      padding: 44px 38px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: var(--card);
+      box-shadow: 0 18px 50px var(--shadow);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      animation: reveal 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    h1 {
+      margin: 0 0 30px;
+      font-size: clamp(22px, 5vw, 27px);
+      font-weight: 650;
+      line-height: 1.35;
+      letter-spacing: -0.035em;
+      text-align: center;
+    }
+
+    .challenge {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    altcha-widget {
+      display: block;
+      width: 100%;
+      font-size: 17px;
+      --altcha-color-base: #eef6ff;
+      --altcha-color-base-content: #1d1d1f;
+      --altcha-color-border: #b8d8f8;
+      --altcha-color-neutral: #b8d8f8;
+      --altcha-checkbox-border-color: #78afe5;
+      --altcha-color-border-focus: #0071e3;
+      --altcha-color-primary: #0071e3;
+      --altcha-color-success: #0071e3;
+      --altcha-color-success-content: #34c759;
+      --altcha-color-error: #ff3b30;
+      --altcha-border-radius: 16px;
+      --altcha-checkbox-size: 32px;
+      --altcha-padding: 1.2rem 1.25rem;
+      --altcha-max-width: 100%;
+      filter: drop-shadow(0 8px 20px rgba(0, 113, 227, 0.08));
+    }
+
+    .honeypot {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 520px) {
+      .card {
+        padding: 36px 20px;
+        border-radius: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>请先完成 Omgt API 人机验证</h1>
+
+    <form method="post" action="/auth-gate/verify" id="verify-form">
+      <input type="hidden" name="return" value="{{.ReturnPath}}">
+      <label class="honeypot">请勿填写<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      <div class="challenge">
+        <altcha-widget
+          auto="off"
+          challenge="/auth-gate/challenge"
+          name="altcha"
+          type="checkbox"
+          title=""
+          workers="2"
+          language="zh-cn"
+          configuration="{&quot;hideFooter&quot;:true,&quot;hideLogo&quot;:true}"
+        ></altcha-widget>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    const widget = document.querySelector("altcha-widget");
+    const form = document.querySelector("#verify-form");
+    let submitted = false;
+    widget.addEventListener("statechange", (event) => {
+      if (event.detail.state === "verified" && !submitted) {
+        submitted = true;
+        setTimeout(() => form.requestSubmit(), 800);
+      }
+    });
+  </script>
+</body>
+</html>
