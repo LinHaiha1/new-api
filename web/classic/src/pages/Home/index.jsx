@@ -65,6 +65,10 @@ import {
 
 const { Text } = Typography;
 
+const StaticHomePageContent = React.memo(({ content }) => (
+  <div className='mt-[60px]' dangerouslySetInnerHTML={{ __html: content }} />
+));
+
 const Home = () => {
   const { t, i18n } = useTranslation();
   const [statusState] = useContext(StatusContext);
@@ -342,10 +346,7 @@ const Home = () => {
               className='w-full h-screen border-none'
             />
           ) : (
-            <div
-              className='mt-[60px]'
-              dangerouslySetInnerHTML={{ __html: homePageContent }}
-            />
+            <StaticHomePageContent content={homePageContent} />
           )}
         </div>
       )}
