@@ -197,6 +197,9 @@ var CohereSafetySetting string
 const (
 	RequestIdKey         = "X-Oneapi-Request-Id"
 	UpstreamRequestIdKey = "X-Upstream-Request-Id"
+	// TraceHeaderKey is the response header used to expose the request id to clients.
+	// Kept separate from RequestIdKey so the internal/upstream conventions stay intact.
+	TraceHeaderKey = "X-Trace-Id"
 )
 
 const (
