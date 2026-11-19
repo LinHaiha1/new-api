@@ -32,8 +32,16 @@ func SetWebRouter(router *gin.Engine, assets ThemeAssets) {
 	router.Use(static.Serve("/", themeFS))
 	router.NoRoute(func(c *gin.Context) {
 		c.Set(middleware.RouteTagKey, "web")
-		if strings.HasPrefix(c.Request.RequestURI, "/v1") || strings.HasPrefix(c.Request.RequestURI, "/api") || strings.HasPrefix(c.Request.RequestURI, "/assets") {
+		uri := c.Request.RequestURI
+		// /v1 keeps the OpenAI-compatible error payload: relay clients parse it.
+		if strings.HasPrefix(uri, "/v1") {
 			controller.RelayNotFound(c)
+			return
+		}
+		// Unknown admin/static paths answer with a plain 404 instead of the
+		// upstream-style JSON body.
+		if strings.HasPrefix(uri, "/api") || strings.HasPrefix(uri, "/assets") {
+			c.String(http.StatusNotFound, "Not Found")
 			return
 		}
 		c.Header("Cache-Control", "no-cache")
