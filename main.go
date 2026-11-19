@@ -259,8 +259,8 @@ func InjectUmamiAnalytics() {
 		analyticsInjectBuilder.WriteString("\" data-website-id=\"")
 		analyticsInjectBuilder.WriteString(umamiSiteID)
 		analyticsInjectBuilder.WriteString("\"></script>")
+		analyticsInjectBuilder.WriteString("<!--umami-analytics-->\n")
 	}
-	analyticsInjectBuilder.WriteString("<!--Umami QuantumNous-->\n")
 	analyticsInject := []byte(analyticsInjectBuilder.String())
 	placeholder := []byte("<!--umami-->\n")
 	indexPage = bytes.ReplaceAll(indexPage, placeholder, analyticsInject)
@@ -283,8 +283,8 @@ func InjectGoogleAnalytics() {
 		analyticsInjectBuilder.WriteString(gaID)
 		analyticsInjectBuilder.WriteString("');")
 		analyticsInjectBuilder.WriteString("</script>")
+		analyticsInjectBuilder.WriteString("<!--ga-analytics-->\n")
 	}
-	analyticsInjectBuilder.WriteString("<!--Google Analytics QuantumNous-->\n")
 	analyticsInject := []byte(analyticsInjectBuilder.String())
 	placeholder := []byte("<!--Google Analytics-->\n")
 	indexPage = bytes.ReplaceAll(indexPage, placeholder, analyticsInject)
