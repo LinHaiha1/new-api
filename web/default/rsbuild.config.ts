@@ -27,7 +27,7 @@ export default defineConfig(({ envMode }) => {
     plugins: [pluginReact(), pluginTailwindcss({ optimize: false })],
     // Rsbuild 2: replaces deprecated `performance.chunkSplit` (RSPack 2 aligned)
     splitChunks: {
-      preset: 'default',
+      preset: 'none',
       cacheGroups: {
         'vendor-react': {
           test: /node_modules[\\/](react|react-dom)[\\/]/,
@@ -46,6 +46,13 @@ export default defineConfig(({ envMode }) => {
         'vendor-tanstack': {
           test: /node_modules[\\/]@tanstack[\\/]/,
           name: 'vendor-tanstack',
+          chunks: 'all',
+          priority: 0,
+          enforce: true,
+        },
+        'vendor-router': {
+          test: /node_modules[\\/](react-router|react-router-dom|@remix-run)[\\/]/,
+          name: 'vendor-router',
           chunks: 'all',
           priority: 0,
           enforce: true,
