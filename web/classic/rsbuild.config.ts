@@ -40,6 +40,27 @@ export default defineConfig(({ envMode }) => {
         ),
       },
     },
+    // Neutral vendor chunk names: the stock build exposes upstream-specific
+    // bundle names (lib-react / lib-router) that are trivially fingerprintable.
+    splitChunks: {
+      preset: 'none',
+      cacheGroups: {
+        'vendor-react': {
+          test: /node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+          name: 'vendor-react',
+          chunks: 'all',
+          priority: 0,
+          enforce: true,
+        },
+        'vendor-router': {
+          test: /node_modules[\\/](react-router|react-router-dom|@remix-run)[\\/]/,
+          name: 'vendor-router',
+          chunks: 'all',
+          priority: 0,
+          enforce: true,
+        },
+      },
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
